@@ -31,3 +31,11 @@ class SelfAttention(nn.Module):
             mask = torch.ones_like(weight, dtype=torch.bool).triu(1)
             weight.masked_fill_(mask, torch.inf)
             
+        weight = weight / math.sqrt(self.head_dim)
+        weight = F.softmax(weight, dim=-1)
+        
+        output = weight @ v
+        output = output.transpose(1, 2)
+        output = output.reshape(input_shape)
+        
+        return self.out_proj(output)
