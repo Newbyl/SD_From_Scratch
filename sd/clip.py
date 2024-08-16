@@ -21,6 +21,7 @@ class CLIP(nn.Module):
         
         return self.layer_norm(state)
 
+
 class CLIPEmbedding(nn.Module):
     def __init__(self, vocab_size, embed_dim, n_tokens):
         super().__init__()
@@ -31,4 +32,7 @@ class CLIPEmbedding(nn.Module):
     
     def forward(self, tokens):
         return self.token_embedding(tokens) + self.positional_embedding
-        
+
+
+class CLIPLayer(nn.Module):
+    
