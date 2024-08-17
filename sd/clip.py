@@ -35,4 +35,28 @@ class CLIPEmbedding(nn.Module):
 
 
 class CLIPLayer(nn.Module):
-    
+    def __init__(self, n_heads, embed_dim):
+        super().__init__()
+        self.layernorm_1 = nn.LayerNorm(embed_dim)
+        self.attention = SelfAttention(n_heads, embed_dim)
+        self.layernorm_2 = nn.LayerNorm(embed_dim)
+        
+        self.linear_1 = nn.Linear(embed_dim, embed_dim * 4)
+        self.linear_2 = nn.Linear(embed_dim * 4, embed_dim)
+        
+    def forward(self, x):
+        res = x
+        
+        # Self-attention
+        x = self.layernorm_1(x)
+        x = self.attention(x, causal_mask=True)
+        x = x + res
+        
+        # FFN
+        res = x
+        x = self.layernorm_2(x)
+        x = self.linear_1(x)
+        x = x * torch.sigmoid(x * 1.702) # quickgelu activation
+        x = self.linear_2(x)
+        
+        return x + res
