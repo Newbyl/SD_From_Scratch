@@ -3,7 +3,7 @@ import numpy as np
 
 class DDPMSampler:
 
-    def __init__(self, generator: torch.Generator, num_training_steps=1000, beta_start: float = 0.00085, beta_end: float = 0.0120):
+    def __init__(self, generator, num_training_steps=1000, beta_start=0.00085, beta_end=0.0120):
         self.betas = torch.linspace(beta_start ** 0.5, beta_end ** 0.5, num_training_steps, dtype=torch.float32) ** 2
         self.alphas = 1.0 - self.betas
         self.alphas_cumprod = torch.cumprod(self.alphas, dim=0)
@@ -20,11 +20,11 @@ class DDPMSampler:
         timesteps = (np.arange(0, num_inference_steps) * step_ratio).round()[::-1].copy().astype(np.int64)
         self.timesteps = torch.from_numpy(timesteps)
 
-    def _get_previous_timestep(self, timestep: int) -> int:
+    def _get_previous_timestep(self, timestep):
         prev_t = timestep - self.num_train_timesteps // self.num_inference_steps
         return prev_t
     
-    def _get_variance(self, timestep: int) -> torch.Tensor:
+    def _get_variance(self, timestep):
         prev_t = self._get_previous_timestep(timestep)
 
         alpha_prod_t = self.alphas_cumprod[timestep]
@@ -42,7 +42,7 @@ class DDPMSampler:
         self.timesteps = self.timesteps[start_step:]
         self.start_step = start_step
 
-    def step(self, timestep: int, latents: torch.Tensor, model_output: torch.Tensor):
+    def step(self, timestep, latents, model_output):
         t = timestep
         prev_t = self._get_previous_timestep(t)
 
@@ -72,9 +72,9 @@ class DDPMSampler:
     
     def add_noise(
         self,
-        original_samples: torch.FloatTensor,
-        timesteps: torch.IntTensor,
-    ) -> torch.FloatTensor:
+        original_samples,
+        timesteps,
+    ):
         alphas_cumprod = self.alphas_cumprod.to(device=original_samples.device, dtype=original_samples.dtype)
         timesteps = timesteps.to(original_samples.device)
 
