@@ -17,6 +17,7 @@ Clone the repo, install dependencies, and start exploring:
 ```bash
 git clone https://github.com/Newbyl/SD_From_Scratch.git
 cd stable-diffusion-from-scratch
-pip install -r requirements.txt```
+pip install -r requirements.txt
+```
 
-You will find in `the demo.ipynb` notebook some code to generate images.
+You will find in the `demo.ipynb` notebook some code to generate images.
