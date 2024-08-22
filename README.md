@@ -20,4 +20,6 @@ cd stable-diffusion-from-scratch
 pip install -r requirements.txt
 ```
 
+Download the pretrained weights named `v1-5-pruned-emaonly.ckpt` [here](https://huggingface.co/runwayml/stable-diffusion-v1-5/tree/main) and also the `vocab.json` and `merge.txt` from here [there](https://huggingface.co/runwayml/stable-diffusion-v1-5/tree/main/tokenizer) and put them in the `data` folder.
+
 You will find in the `demo.ipynb` notebook some code to generate images.
