@@ -1,3 +1,6 @@
 torch
 numpy
+tqdm
+transformers
+lightning
 pillow
